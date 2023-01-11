@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+ 
+
+<html>
+
+ 
+
+<head>
+
+ 
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+ 
+
+<style>
+
+ 
+
+body {font-family: Arial;}
+
+ 
+
+/* Style the tab */
+
+ 
+
+.tab {
+
+  overflow: hidden;
+
+  border: 1px solid #ccc;
+
+  background-color: #f1f1f1;
+
+}
+
+ 
+
+.editor {
+
+  position: relative;
+
+  height: 80vh;
+
+  width: 95vw;
+
+  overflow: scroll;
+
+  border: 2px solid #73AD21;
+
+}
+
+ 
+
+/* Style the buttons inside the tab */
+
+ 
+
+.tab button {
+
+  background-color: inherit;
+
+  float: left;
+
+  border: none;
+
+  outline: none;
+
+  cursor: pointer;
+
+  padding: 14px 16px;
+
+  transition: 0.3s;
+
+  font-size: 17px;
+
+  /*position: flex;*/
+
+}
+
+ 
+
+/* Change background color of buttons on hover */
+
+ 
+
+.tab button:hover {
+
+  background-color: #ddd;
+
+}
+
+ 
+
+/* Create an active/current tablink class */
+
+ 
+
+.tab button.active {
+
+  background-color: #ccc;
+
+}
+
+/* Style the tab content */
+
+ 
+
+.tabcontent {
+
+  position: relative;
+
+  /*display: flex;*/
+
+  flex-direction: column;
+
+  overflow: scroll;
+
+  padding: 6px 12px;
+
+  border: 1px solid #ccc;
+
+  border-top: none;
+
+  height: 80vh;
+
+  top: 1px;
+
+}
+
+ 
+
+.dragger {
+
+  position: absolute;
+
+  width: 50vw;
+
+  max-width:600px;
+
+  top: 0px;
+
+  height: 20vh;
+
+  background-color: #f1f1f1;
+
+  text-align: center;
+
+  border: 1px solid #d3d3d3;
+
+}
+
+ 
+
+.draggerheader {
+
+  position:relative;
+
+  padding: 1px;
+
+  width: 50vw;
+
+  max-width:600px;
+
+  height: 5vh;
+
+  cursor: move;
+
+  background-color: #2196F3;
+
+  color: #fff;
+
+}
+
+ 
+
+</style>
+
+ 
+
+</head>
+
+ 
+
+<body>
+
+ 
+
+<p>Testing grounds for the interface.  Nothing more yet, I'm afraid.</p>
+
+ 
+
+<div class="tab" id="tabs">
+
+  <button class="tablinks" onclick="openTab(event, 'Game Editor')">Game Editor</button>
+
+  <button class="tablinks" onclick="openTab(event, 'Preview Screen')">Preview Game</button>
+
+  <button class="tablinks" onclick="openTab(event, 'Save or Export')">Save or Export</button>
+
+</div>
+
+ 
+
+ 
+
+    <div id="Game Editor" class="tabcontent" onmousemove="showCoords(event)">
+
+      <h3>Editor</h3>
+
+      <p>This is where the main tree for the game is displayed.</p>
+
+ 
+
+  <div id="Preview Screen" class="tabcontent">
+
+  <h3>Preview Screen</h3>
+
+  <p>This lets you choose to preview the game!  Or, you can choose to just work on a few commands.
+
+  you choose below.</p>
+
+  <div id="Preview Options" class="tab">
+
+                <button class="tablinks" onclick="openPreviewSubTab(event, 'Player')">Preview Game</button>
+
+                <button class="tablinks" onclick="openPreviewSubTab(event, 'Preview Test')">Preview Test Code</button>
+
+                <button class="tablinks" onclick="openPreviewSubTab(event, 'Preview Code')">Test Code</button>
+
+  </div>
+
+</div>
+
+ 
+
+<div id="Save or Export" class="tabcontent">
+
+  <h3>Tokyo</h3>
+
+  <p>Tokyo is the capital of Japan.</p>
+
+</div>
+
+<div id="Initial Warnings">
+
+<p><b>Don't forget, before you start!</b>  There are two ways to save your game with important differences!  To save your game to work on it later you have to hit "save."  To play your game,
+
+hit "export."  If you only play your game and forget to save it, you'll never be able to edit it again!  You'll have to start over!<br>Know that when typing things for the game, you can't type '[' unless it is
+
+part of one of the commands!</p>
+
+ 
+
+</div>
+
+<script src="./interface.js"></script>
+
+</body>
+
+ 
+
+</html>
