@@ -74,16 +74,16 @@ class Object
 	if (this.downObject!=null) return 0+this.downObject.countGroupObjectsBelow();
 	else return 0;
   }
-  suicide()
+  suicide(endBlock=false)
   {
     //console.log("starting to close");
     let oldTopObject = this.upObject;
     let oldDownObject = this.downObject;
-    this.severTop();
+    this.severTop(endBlock);
     this.box.remove();
     objects.delete(this.index);
     if (oldDownObject != null)
-      if (oldTopObject != null) oldDownObject.insertAbove(oldTopObject);
+      if (oldTopObject != null) oldDownObject.insertAbove(oldTopObject,endBlock);
     console.log(this);
   }
 
@@ -113,13 +113,15 @@ class Object
       this.propogateDown(originalCaller);
     }
   }
-  insertBelow(newdown)
+  insertBelow(newdown,blockEnd=false)
   {
     this.downObject = newdown;
 
-    this.handleFooter();
+    if (blockEnd==false) this.handleFooter();
   }
-  insertAbove(upObject)
+  //insertBelow
+  //severTop
+  insertAbove(upObject,blockEnd=false)
   {
     let oldUp = this.upObject;
     let oldDown = this.downObject;
@@ -127,7 +129,7 @@ class Object
     this.upObject = upObject;
     //console.trace();
     //console.log(this.upObject);
-    this.upObject.insertBelow(this);
+    this.upObject.insertBelow(this,blockEnd);
     this.box.style.left = upObject.box.style.left;
     if (this.headerBox!=null){
     	this.upObject.box.style.top = (parseFloat(this.box.style.top) - (this.upObject.box.getBoundingClientRect().height + this.headerBox.getBoundingClientRect().height)) + "px";
@@ -147,7 +149,7 @@ class Object
     }
     let topOfStack = this.returnTop() //Does this work above the line?
     topOfStack.moveBelow();
-    this.propogateUp();
+    this.propogateUp(blockEnd);
   }
   handleFooter()
   {
@@ -178,32 +180,32 @@ class Object
     if (this.downObject == null) return totalHeight;
     else return this.downObject.returnStackHeight(totalHeight);
   }
-  removeChild()
+  removeChild(endBlock=false)
   {
     let oldDown=this.downObject;
     this.downObject = null;
-    this.handleFooter();
+    if (endBlock==false) this.handleFooter();
     //if (oldDown!= null) oldDown.propogateUp();
   }
-  propogateUp(){
+  propogateUp(blockEnd=false){
      //console.log("handling the footer in propUp");
      //console.trace();
-     this.handleFooter();
-     if (this.upObject!=null) this.upObject.propogateUp();
+     if (blockEnd==false) this.handleFooter();
+     if (this.upObject!=null) this.upObject.propogateUp(blockEnd);
   }
-  severTop()
+  severTop(endBlock=false)
   {
     let oldUp = this.upObject;
-    if (this.upObject != null) this.upObject.removeChild();
+    if (this.upObject != null) this.upObject.removeChild(endBlock);
     this.upObject = null;
-    if (oldUp != null) oldUp.propogateUp();
+    if (oldUp != null) oldUp.propogateUp(endBlock);
       
 }
-  suicide()
+  suicide(endBlock=false)
   {
     let oldTopObject = this.upObject;
     let oldDownObject = this.downObject;
-    this.severTop();
+    this.severTop(endBlock);
     this.box.remove();
     if (oldDownObject != null)
       if (oldTopObject != null)
@@ -279,9 +281,10 @@ class groupEnder extends Object{
 	}
 
 	reconcile(){
-		this.suicide();
-		this.groupParent.endBlock=null;
-		this.groupParent.handleFooter();
+		console.log("ordered to reconcile");
+		//this.suicide();
+		//this.groupParent.endBlock=null;
+		//this.groupParent.handleFooter();
 	//Goodbye.....
   	}
 
@@ -323,9 +326,14 @@ class groupHeader extends Object
     //                            Use calc to set height to the headerBox + a token box size
     
     //console.log("I am " + this.countGroupObjectsBelow() + " in the stack.");
-    if (this.footer!=null) this.footer.remove();
+    console.trace();
+	//debugger;
+	if (this.footer!=null) this.footer.remove();
     this.footer=null;
-    this.endBlock=null;
+	if (this.endBlock !=null) {
+		this.endBlock.suicide(true);
+		this.endBlock=null;
+	}
     if (this.downObject==null){
         this.groupChildren=false;
         return;
@@ -361,8 +369,8 @@ class groupHeader extends Object
 	let myBottom=this.returnNextGroupDown();
 	//debugger;
 	document.getElementById('Game Editor').appendChild(this.endBlock.box);
-        if (myBottom.groupParent==null) this.endBlock.insertAbove(myBottom);
-	else myBottom.insertAbove(this.endBlock);
+        if (myBottom.groupParent==null) this.endBlock.insertAbove(myBottom,true);
+	else myBottom.insertAbove(this.endBlock,true);
   }
 
   suicideFooter(){
